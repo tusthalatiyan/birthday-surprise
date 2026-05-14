@@ -9,6 +9,18 @@ const GAME_DURATION = 20
 const MOBILE_BREAKPOINT = 768
 const MOBILE_TARGET_SCORE = 50
 const DESKTOP_TARGET_SCORE = 10
+const MOBILE_HEART_SETTINGS = {
+  spawnInterval: 220,
+  maxVisibleHearts: 18,
+  durationBase: 4.4,
+  durationVariance: 1.4,
+}
+const DESKTOP_HEART_SETTINGS = {
+  spawnInterval: 460,
+  maxVisibleHearts: 10,
+  durationBase: 4.6,
+  durationVariance: 1.8,
+}
 
 export default function HeartGame({ onWin }) {
   const [status, setStatus] = useState('ready')
@@ -21,7 +33,10 @@ export default function HeartGame({ onWin }) {
   const { width, height } = useWindowSize()
   const responsiveTargetScore =
     width < MOBILE_BREAKPOINT ? MOBILE_TARGET_SCORE : DESKTOP_TARGET_SCORE
+  const responsiveHeartSettings =
+    width < MOBILE_BREAKPOINT ? MOBILE_HEART_SETTINGS : DESKTOP_HEART_SETTINGS
   const [targetScore, setTargetScore] = useState(responsiveTargetScore)
+  const [heartSettings, setHeartSettings] = useState(responsiveHeartSettings)
 
   const finishGame = useCallback(
     (didWin) => {
@@ -41,21 +56,21 @@ export default function HeartGame({ onWin }) {
 
     const spawn = window.setInterval(() => {
       setHearts((current) => [
-        ...current.slice(-10),
+        ...current.slice(-(heartSettings.maxVisibleHearts - 1)),
         {
           id: createId(),
           left: 8 + Math.random() * 80,
           size: 24 + Math.random() * 18,
-          duration: 4.6 + Math.random() * 1.8,
+          duration: heartSettings.durationBase + Math.random() * heartSettings.durationVariance,
           drift: -42 + Math.random() * 84,
           travel: 420 + Math.random() * 120,
           hue: Math.random() > 0.5 ? 'text-rose-400' : 'text-fuchsia-300',
         },
       ])
-    }, 460)
+    }, heartSettings.spawnInterval)
 
     return () => window.clearInterval(spawn)
-  }, [status])
+  }, [heartSettings, status])
 
   useEffect(() => {
     if (status === 'playing') {
@@ -63,7 +78,8 @@ export default function HeartGame({ onWin }) {
     }
 
     setTargetScore(responsiveTargetScore)
-  }, [responsiveTargetScore, status])
+    setHeartSettings(responsiveHeartSettings)
+  }, [responsiveHeartSettings, responsiveTargetScore, status])
 
   useEffect(() => {
     if (status !== 'playing') {
@@ -85,6 +101,7 @@ export default function HeartGame({ onWin }) {
 
   const startGame = () => {
     setTargetScore(responsiveTargetScore)
+    setHeartSettings(responsiveHeartSettings)
     completionRef.current = false
     scoreRef.current = 0
     setStatus('playing')
