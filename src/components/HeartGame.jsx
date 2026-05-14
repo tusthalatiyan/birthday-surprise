@@ -6,7 +6,9 @@ import { createId } from '../utils/helpers'
 import { useWindowSize } from '../hooks/useWindowSize'
 
 const GAME_DURATION = 20
-const TARGET_SCORE = 6
+const MOBILE_BREAKPOINT = 768
+const MOBILE_TARGET_SCORE = 20
+const DESKTOP_TARGET_SCORE = 10
 
 export default function HeartGame({ onWin }) {
   const [status, setStatus] = useState('ready')
@@ -17,6 +19,9 @@ export default function HeartGame({ onWin }) {
   const completionRef = useRef(false)
   const scoreRef = useRef(0)
   const { width, height } = useWindowSize()
+  const responsiveTargetScore =
+    width < MOBILE_BREAKPOINT ? MOBILE_TARGET_SCORE : DESKTOP_TARGET_SCORE
+  const [targetScore, setTargetScore] = useState(responsiveTargetScore)
 
   const finishGame = useCallback(
     (didWin) => {
@@ -53,6 +58,14 @@ export default function HeartGame({ onWin }) {
   }, [status])
 
   useEffect(() => {
+    if (status === 'playing') {
+      return
+    }
+
+    setTargetScore(responsiveTargetScore)
+  }, [responsiveTargetScore, status])
+
+  useEffect(() => {
     if (status !== 'playing') {
       return undefined
     }
@@ -60,7 +73,7 @@ export default function HeartGame({ onWin }) {
     const timer = window.setTimeout(() => {
       if (timeLeft <= 1) {
         setTimeLeft(0)
-        finishGame(scoreRef.current >= TARGET_SCORE)
+        finishGame(scoreRef.current >= targetScore)
         return
       }
 
@@ -68,9 +81,10 @@ export default function HeartGame({ onWin }) {
     }, 1000)
 
     return () => window.clearTimeout(timer)
-  }, [finishGame, status, timeLeft])
+  }, [finishGame, status, targetScore, timeLeft])
 
   const startGame = () => {
+    setTargetScore(responsiveTargetScore)
     completionRef.current = false
     scoreRef.current = 0
     setStatus('playing')
@@ -95,14 +109,14 @@ export default function HeartGame({ onWin }) {
       setBursts((current) => current.filter((burst) => burst.id !== burstId))
     }, 500)
 
-    if (nextScore >= TARGET_SCORE) {
+    if (nextScore >= targetScore) {
       finishGame(true)
     }
   }
 
   return (
     <div className="relative overflow-hidden rounded-[2rem]">
-      {status === 'finished' && score >= TARGET_SCORE ? (
+      {status === 'finished' && score >= targetScore ? (
         <Confetti
           recycle={false}
           numberOfPieces={180}
@@ -117,7 +131,7 @@ export default function HeartGame({ onWin }) {
           <p className="section-label text-xs uppercase tracking-[0.22em]">heart catch</p>
           <h3 className="section-title !mt-5 !text-[clamp(2.2rem,5vw,3.6rem)]">Catch as many hearts as you can</h3>
           <p className="section-copy">
-            Tap the floating hearts before they drift away. Reach {TARGET_SCORE} to win the full reveal.
+            Tap the floating hearts before they drift away. Reach {targetScore} to win the full reveal.
           </p>
         </div>
 
@@ -156,7 +170,7 @@ export default function HeartGame({ onWin }) {
         <div className="pointer-events-none relative z-10 flex h-full flex-col justify-between">
           <div className="flex justify-between text-xs font-extrabold uppercase tracking-[0.22em] text-[rgba(93,79,109,0.55)]">
             <span>tap quickly</span>
-            <span>goal: {TARGET_SCORE}</span>
+            <span>goal: {targetScore}</span>
           </div>
 
           <div className={`mx-auto flex max-w-md flex-col items-center text-center ${status !== 'playing' ? 'pointer-events-auto' : ''}`}>
@@ -176,10 +190,10 @@ export default function HeartGame({ onWin }) {
                   <Sparkles size={26} />
                 </div>
                 <p className="text-[1.55rem] font-extrabold text-[var(--ink-strong)]">
-                  {score >= TARGET_SCORE ? 'You caught my heart too 💖' : 'Almost had it, pretty close though'}
+                  {score >= targetScore ? 'You caught my heart too 💖' : 'Almost had it, pretty close though'}
                 </p>
                 <p className="mt-3 max-w-sm text-sm leading-7 text-[rgba(93,79,109,0.72)]">
-                  {score >= TARGET_SCORE
+                  {score >= targetScore
                     ? 'That was officially adorable. The hearts agree.'
                     : 'One more round and the sky is yours. The replay button is ready.'}
                 </p>
