@@ -7,7 +7,7 @@ import { useWindowSize } from '../hooks/useWindowSize'
 
 const GAME_DURATION = 20
 const MOBILE_BREAKPOINT = 768
-const MOBILE_TARGET_SCORE = 20
+const MOBILE_TARGET_SCORE = 50
 const DESKTOP_TARGET_SCORE = 10
 
 export default function HeartGame({ onWin }) {
