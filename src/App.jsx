@@ -145,13 +145,6 @@ export default function App() {
     })
   }
 
-  const handleReasonsComplete = () => {
-    showPopup({
-      title: 'All reasons revealed',
-      body: 'Twenty-four little reminders are now officially out in the open.',
-    })
-  }
-
   const handleFoundSecret = (_, message, count) => {
     audio.playReveal()
     showPopup({
@@ -390,7 +383,6 @@ export default function App() {
                   <ReasonsSection
                     reasons={reasons}
                     onReveal={handleReasonReveal}
-                    onComplete={handleReasonsComplete}
                   />
                 </div>
               </section>

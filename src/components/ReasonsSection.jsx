@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronRight, Heart, Sparkles } from 'lucide-react'
 import { createId } from '../utils/helpers'
@@ -6,9 +6,11 @@ import { createId } from '../utils/helpers'
 export default function ReasonsSection({ reasons, onReveal, onComplete }) {
   const [revealedCount, setRevealedCount] = useState(0)
   const [bursts, setBursts] = useState([])
+  const completionSentRef = useRef(false)
 
   useEffect(() => {
-    if (revealedCount === reasons.length && reasons.length) {
+    if (revealedCount === reasons.length && reasons.length && !completionSentRef.current) {
+      completionSentRef.current = true
       onComplete?.(revealedCount)
     }
   }, [onComplete, reasons.length, revealedCount])
