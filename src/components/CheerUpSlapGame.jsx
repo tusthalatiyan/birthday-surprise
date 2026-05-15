@@ -4,7 +4,7 @@ import { Heart, RotateCcw, Sparkles, Target } from 'lucide-react'
 import { createId } from '../utils/helpers'
 
 const defaultNote =
-  'Whenever you feel sad, come here, tap my face a little, and collect cheer points until the mood feels lighter.'
+  'BAJAO JAB TAK KHUSH NA HO JAO'
 
 const reactionLabels = [
   'bonk!',
