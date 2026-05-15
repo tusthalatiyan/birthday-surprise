@@ -11,6 +11,7 @@ import NameReveal from './components/NameReveal.jsx'
 import PhotoWall from './components/PhotoWall.jsx'
 import PopupMessage from './components/PopupMessage.jsx'
 import ReasonsSection from './components/ReasonsSection.jsx'
+import CheerUpSlapGame from './components/CheerUpSlapGame.jsx'
 import SecretLetter from './components/SecretLetter.jsx'
 import SecretHunt from './components/SecretHunt.jsx'
 import SpinWheel from './components/SpinWheel.jsx'
@@ -31,6 +32,7 @@ import {
 import { useBirthdayAudio } from './hooks/useBirthdayAudio.js'
 import { usePrefersReducedMotion } from './hooks/usePrefersReducedMotion.js'
 import { useSweetPopups } from './hooks/useSweetPopups.js'
+import { slapGamePhoto } from './assets/slapGamePhoto.js'
 
 export default function App() {
   const [phase, setPhase] = useState('loading')
@@ -400,6 +402,12 @@ export default function App() {
               <section className="section-shell">
                 <div className="mx-auto max-w-6xl px-4 sm:px-6">
                   <Timeline milestones={timelineMoments} />
+                </div>
+              </section>
+
+              <section className="section-shell">
+                <div className="mx-auto max-w-6xl px-4 sm:px-6">
+                  <CheerUpSlapGame photoSrc={slapGamePhoto} onTap={audio.playClick} />
                 </div>
               </section>
 
