@@ -2,7 +2,7 @@ export const photoMemories = [
   { src: '/images/Vid1.jpeg', caption: 'wow kya sunder ladki hai', sticker: '✨ pataka', left: '8%', top: '8%', rotate: -8 },
   { src: '/images/Vid2.jpeg', caption: 'soke uthi hi bas', sticker: '💗 too cute', left: '54%', top: '3%', rotate: 9 },
   { src: '/images/Vid3.jpeg', caption: 'sunflower lag rahi ho', sticker: '🦋 katai zeher', left: '18%', top: '42%', rotate: 5 },
-  { src: '/images/Vid4.jpeg', caption: 'itni bhi sunder nhi aap jitna dikha rahi ho', sticker: '🌸 garam garam', left: '61%', top: '36%', rotate: -10 },
+  { src: '/images/Vid4.jpeg', caption: 'itni bhi sunder nhi aap jitna dikha rahi ho', sticker: '🌸 Cutie', left: '61%', top: '36%', rotate: -10 },
   { src: '/images/Vid5.jpeg', caption: 'ek aadhi photo humse bhi khicha lo', sticker: '🎀 heart stealer', left: '35%', top: '62%', rotate: -3 },
 ]
 
